@@ -1,12 +1,12 @@
 
 		// Define an array of music tracks
-		const tracks = [ "thunder_step.mp3", "witches_dance.mp3", "old_ship_2.mp3", "triste_coeur.mp3", "grumbledrums.mp3", "maidens_web.mp3", "ephemeris.mp3", "airs_and_graces.mp3", "cloud_city.mp3", "embarrassing_pleasures.mp3", "freedom.mp3"];
+		const tracks = [ "thunder_step.mp3", "witches_dance.mp3", "old_ship_2.mp3", "triste_coeur.mp3", "grumbledrums.mp3", "airs_and_graces.mp3", "maidens_web.mp3", "freedom.mp3", "ephemeris.mp3", "embarrassing_pleasures.mp3", "cloud_city.mp3"];
 		// Create a new Audio element
 		var audioElement = new Audio();
 		
 		// Define a function to play the next track
 		function playNextTrack() {
-			// Generate a random number between 1 and the number of tracks in the array
+			// Generate a random number between 0 and the number of tracks in the array
 			var randomNumber = ((Math.floor(Math.random() * 10))+1);
 			// Use the random number to select a track from the array
 			const track = tracks[randomNumber];
@@ -91,7 +91,7 @@
                 // customised to be used for other things too.
                 var splitTag = splitPropertyTag(tag);
 
-		// SOUNDTRACK
+		// SOUNDTRACK: src
 		if( splitTag && splitTag.property == "SOUNDTRACK") {
 		playNextTrack();
 		}
@@ -196,32 +196,33 @@
             var choiceAnchorEl = choiceParagraphElement.querySelectorAll("a")[0];
             choiceAnchorEl.addEventListener("click", function(event) {
 
-                // Don't follow <a> link
+  		 // Don't follow <a> link
                 event.preventDefault();
+
+				// Extend height to fit
+				// We do this manually so that removing elements and creating new ones doesn't
+				// cause the height (and therefore scroll) to jump backwards temporarily.
+				storyContainer.style.height = contentBottomEdgeY()+"px";
 
                 // Remove all existing choices
                 removeAll(".choice");
 
                 // Tell the story where to go next
                 story.ChooseChoiceIndex(choice.index);
-
                 // This is where the save button will save from
                 savePoint = story.state.toJson();
-
                 // Aaand loop
                 continueStory();
             });
         });
 
-        // Extend height to fit
-        // We do this manually so that removing elements and creating new ones doesn't
-        // cause the height (and therefore scroll) to jump backwards temporarily.
-        storyContainer.style.height = contentBottomEdgeY()+"px";
+		// Unset storyContainer's height, allowing it to resize itself
+		storyContainer.style.height = "";
 
         if( !firstTime )
             scrollDown(previousBottomEdge);
 
-    }
+}
 
     function restart() {
         story.ResetState();
