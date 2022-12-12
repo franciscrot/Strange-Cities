@@ -1,4 +1,23 @@
 
+		// Define an array of music tracks
+		const tracks = [ "thunder_step.mp3", "witches_dance.mp3", "old_ship_2.mp3", "triste_coeur.mp3", "grumbledrums.mp3", "maidens_web.mp3", "ephemeris.mp3", "airs_and_graces.mp3", "cloud_city.mp3", "embarrassing_pleasures.mp3", "freedom.mp3"];
+		// Create a new Audio element
+		var audioElement = new Audio();
+		
+		// Define a function to play the next track
+		function playNextTrack() {
+			// Generate a random number between 1 and the number of tracks in the array
+			var randomNumber = ((Math.floor(Math.random() * 10))+1);
+			// Use the random number to select a track from the array
+			const track = tracks[randomNumber];
+			// Set the src property of the Audio element to the selected track
+			audioElement.src = track;
+			// Play the track
+			audioElement.play();
+			// Set the onended event of the Audio element to call the playNextTrack function
+			audioElement.onended = playNextTrack;
+			}
+
 (function(storyContent) {
 
     // Create ink story from the content using inkjs
@@ -71,6 +90,11 @@
                 // Detect tags of the form "X: Y". Currently used for IMAGE and CLASS but could be
                 // customised to be used for other things too.
                 var splitTag = splitPropertyTag(tag);
+
+		// SOUNDTRACK
+		if( splitTag && splitTag.property == "SOUNDTRACK") {
+		playNextTrack();
+		}
 
                 // AUDIO: src
                 if( splitTag && splitTag.property == "AUDIO" ) {
